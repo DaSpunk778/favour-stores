@@ -1,5 +1,14 @@
 require('dotenv').config({ path: '.env.local' });
 
+const sslConfig = {
+  dialectOptions: {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false,
+    },
+  },
+};
+
 module.exports = {
   development: {
     url: process.env.DATABASE_URL,
@@ -9,7 +18,7 @@ module.exports = {
     url: process.env.DATABASE_URL,
     dialect: 'postgres',
     dialectOptions: {
-      ssl: { require: true, rejectUnauthorized: false },
+      ...sslConfig,
     },
   },
 };
