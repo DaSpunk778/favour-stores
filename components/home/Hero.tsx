@@ -60,7 +60,7 @@ export default function Hero() {
                     <div className="flex flex-wrap gap-3 ">
                         <Link
                             href="#"
-                            className="lex items-center gap-2 bg-brand hover:bg-brand-dark text-white font-semibold px-6 py-3 rounded-xl transition-all duration-150 hover:shadow-lg hover:shadow-brand/30"
+                            className="lex items-center gap-2 bg-brand hover:bg-brand-dark text-white font-semibold px-8 py-3 rounded-xl transition-all duration-150 hover:shadow-lg hover:shadow-brand/30"
                         >
                             Shop Now <FiArrowRight />
                         </Link>
