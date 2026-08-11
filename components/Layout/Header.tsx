@@ -71,7 +71,7 @@ export default function Header() {
                                 <FiSearch size={18} />
                             </button>
                         )}
-                        <button className="hidden sm:flex p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors">
+                        <button className=" p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors">
                             <FiUser size={18} />
                         </button>
 
@@ -91,6 +91,20 @@ export default function Header() {
                     </div>
                 </div>
             </div>
+
+            {mobileOpen && (
+                <div className="lg:hidden border-t border-gray-100 bg-white px-4 py-4 flex flex-col gap-1">
+                    {navLinks.map((link) => (
+                        <Link
+                            key={link.href}
+                            href={link.href}
+                            className="text-left px-3 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-lg"
+                        >
+                            {link.label}
+                        </Link>
+                    ))}
+                </div>
+            )}
         </header>
     );
 };
