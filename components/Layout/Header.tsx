@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { FiChevronDown, FiMenu, FiSearch, FiShoppingCart, FiUser, FiX } from "react-icons/fi";
 import { useCartStore } from "@/lib/cart-store";
+import { FaBarsStaggered } from "react-icons/fa6";
 
 const navLinks = [
     { label: "Home", href: "/" },
@@ -86,7 +87,7 @@ export default function Header() {
                             className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg lg:hidden"
                             onClick={() => setMobileOpen((o) => !o)}
                         >
-                            {mobileOpen ? <FiX size={22} /> : <FiMenu size={22} />}
+                            {mobileOpen ? <FiX size={22} /> : <FaBarsStaggered  size={22} />}
                         </button>
                     </div>
                 </div>
