@@ -86,7 +86,7 @@ export default function Hero() {
                     <h1 className="text-4xl sm:text-5xl xl:text-6xl font-black text-white leading-tight">
                         <span className="hero-line block">Upgrade to</span>
                         <span className="hero-line block">Next Level</span>
-                        <span className="hero-line block whitespace-nowrap text-[#39a75a]"> Electronical Appliances </span>
+                        <span className="hero-line block whitespace-nowrap text-green"> Electronical Appliances </span>
                     </h1>
                     <p className="hero-desc text-gray-200 text-base leading-relaxed max-w-md">
                         Discover the latest electrical products and devices designed to
