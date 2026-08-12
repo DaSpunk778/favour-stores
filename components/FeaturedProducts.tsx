@@ -220,6 +220,14 @@ export default function FeaturedProducts() {
                     </div>
                 ))}
             </div>
+            <div className="flex justify-center mt-8">
+                <Link
+                    href="/products"
+                    className="text-[13px] inline-flex items-center justify-center  border border-brand text-brand font-semibold px-8 py-3 hover:bg-brand hover:text-white transition-colors duration-150"
+                >
+                    View All Products
+                </Link>
+            </div>
         </section>
     );
 }
