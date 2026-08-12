@@ -69,7 +69,7 @@ export default function Hero() {
                 className="absolute inset-0 z-0 pointer-events-none"
                 style={{
                     scale,
-                    backgroundImage: "url('/home/hero.png')",
+                    backgroundImage: "url('/home/Hero-1.png')",
                     backgroundSize: "cover",
                     backgroundPosition: "center",
                 }}
@@ -79,7 +79,7 @@ export default function Hero() {
 
             <div ref={containerRef} className="relative z-20 max-w-7xl mx-auto px-4 py-20 w-full mix-blend-normal">
                 <div className="max-w-xl space-y-6">
-                    
+
                     <p className="hero-kicker w-fit px-3 py-1 border border-brand rounded-lg bg-brand/10 text-brand-light font-bold text-sm tracking-wider uppercase">
                         New Tech. Better Life.
                     </p>
