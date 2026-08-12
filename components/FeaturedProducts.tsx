@@ -143,7 +143,7 @@ export default function FeaturedProducts() {
                 </h2>
                 <Link
                     href="/products"
-                    className="text-sm font-semibold text-brand hover:text-brand-dark transition-colors"
+                    className="border border-[#c6f4c6] bg-[#cdf4cd] w-fit px-3 py-1  text-sm font-semibold text-brand hover:text-brand-dark transition-colors"
                 >
                     More products
                 </Link>
@@ -171,7 +171,7 @@ export default function FeaturedProducts() {
                                     alt={products.name}
                                     fill
                                     sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                                    className="object-cover group-hover:scale-105 transition-transform duration-200"
+                                    className="object-cover group-hover:scale-105 transition-transform duration-200"//hover for zooming
                                 />
                             </div>
                         </Link>

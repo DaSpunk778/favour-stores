@@ -75,8 +75,8 @@ export default function CategoryStrip() {
                     <span className="inline-flex"><GoTag size={20} color="green" /></span>
                 </h2>
                 <Link
-                    href="/categories"
-                    className="text-sm font-semibold text-brand hover:text-brand-dark transition-colors"
+                    href="/products"
+                    className="border border-[#c6f4c6] bg-[#cdf4cd] w-fit px-3 py-1  text-sm font-semibold text-brand hover:text-brand-dark transition-colors"
                 >
                     View all
                 </Link>
@@ -105,53 +105,52 @@ export default function CategoryStrip() {
                     className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide snap-x snap-mandatory"
                 >
                     {categories.map(({ name, slug, image, comingSoon }) => {
-                    const tileContent = (
-                        <>
-                            <span className="relative w-28 h-28 sm:w-32 sm:h-32 rounded-xl border border-gray-200 bg-gray-50 overflow-hidden block transition-all duration-150 group-hover:border-brand group-hover:shadow-md">
-                                <Image
-                                    src={image}
-                                    alt={name}
-                                    fill
-                                    sizes="128px"
-                                    className="object-cover"
-                                />
-                                {comingSoon && (
-                                    <span className="absolute inset-0 bg-white/70 flex items-center justify-center">
-                                        <span className="text-[10px] font-semibold text-brand-dark bg-white px-1.5 py-0.5 rounded shadow-sm">
-                                            Coming soon
+                        const tileContent = (
+                            <>
+                                <span className="relative w-28 h-28 sm:w-32 sm:h-32 rounded-xl border border-gray-200 bg-gray-50 overflow-hidden block transition-all duration-150 group-hover:border-brand group-hover:shadow-md">
+                                    <Image
+                                        src={image}
+                                        alt={name}
+                                        fill
+                                        sizes="128px"
+                                        className="object-cover"
+                                    />
+                                    {comingSoon && (
+                                        <span className="absolute inset-0 bg-white/70 flex items-center justify-center">
+                                            <span className="text-[10px] font-semibold text-brand-dark bg-white px-1.5 py-0.5 rounded shadow-sm">
+                                                Coming soon
+                                            </span>
                                         </span>
-                                    </span>
-                                )}
-                            </span>
-                            <span className="text-[14px] font-medium text-gray-800 leading-tight">
-                                {name}
-                            </span>
-                        </>
-                    );
-
-                    const tileClass = `snap-start shrink-0 w-28 sm:w-32 flex flex-col items-center gap-2 text-center group ${
-                        comingSoon ? "opacity-60" : ""
-                    }`;
-
-                    if (comingSoon) {
-                        return (
-                            <div key={slug} role="listitem" className={tileClass}>
-                                {tileContent}
-                            </div>
+                                    )}
+                                </span>
+                                <span className="text-[14px] font-medium text-gray-800 leading-tight">
+                                    {name}
+                                </span>
+                            </>
                         );
-                    }
 
-                    return (
-                        <Link
-                            key={slug}
-                            href={`/categories/${slug}`}
-                            role="listitem"
-                            className={tileClass}
-                        >
-                            {tileContent}
-                        </Link>
-                    );
-                })}
+                        const tileClass = `snap-start shrink-0 w-28 sm:w-32 flex flex-col items-center gap-2 text-center group ${comingSoon ? "opacity-60" : ""
+                            }`;
+
+                        if (comingSoon) {
+                            return (
+                                <div key={slug} role="listitem" className={tileClass}>
+                                    {tileContent}
+                                </div>
+                            );
+                        }
+
+                        return (
+                            <Link
+                                key={slug}
+                                href={`/categories/${slug}`}
+                                role="listitem"
+                                className={tileClass}
+                            >
+                                {tileContent}
+                            </Link>
+                        );
+                    })}
                 </div>
 
                 {/* Right arrow — desktop only */}
