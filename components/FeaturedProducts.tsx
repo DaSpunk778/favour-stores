@@ -137,7 +137,7 @@ export default function FeaturedProducts() {
     return (
         <section className="max-w-7xl mx-auto px-4 py-10">
             <div className="flex items-center justify-between mb-5">
-                <h2 className="text-[14px] sm:text-2xl font-bold text-gray-900">
+                <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">
                     <span>Best Sellers </span>
                     <span className="inline-flex"><BsBagCheck size={20} color="green" /></span>
                 </h2>

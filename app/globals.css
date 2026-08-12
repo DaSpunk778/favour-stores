@@ -30,7 +30,7 @@
 }
 
 .brand-marquee-track {
-  animation: brand-marquee 30s linear infinite;
+  animation: brand-marquee 50s linear infinite;
 }
 
 .brand-marquee-track:hover {

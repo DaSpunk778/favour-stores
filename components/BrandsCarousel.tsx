@@ -1,5 +1,7 @@
 "use client";
 
+import { PiHandshake } from "react-icons/pi";
+
 type Brand = {
     name: string;
     slug: string;
@@ -32,14 +34,15 @@ export default function BrandsCarousel() {
         <section className="py-10 border-y border-gray-100 bg-gray-50/50 overflow-hidden">
             <div className="max-w-7xl mx-auto px-4 mb-6">
                 <h2 className="text-xl sm:text-2xl font-bold text-gray-900 text-center">
-                    Trusted Brands
+                    <span>Trusted Brands </span>
+                    <span className="inline-flex"><PiHandshake size={20} color="green" /></span>
                 </h2>
             </div>
 
             <div className="relative">
                 {/* Fade edges so logos don't hard-cut at the viewport edge */}
-                <div className="pointer-events-none absolute inset-y-0 left-0 w-16 sm:w-24 z-10 bg-gradient-to-r from-gray-50/50 to-transparent" />
-                <div className="pointer-events-none absolute inset-y-0 right-0 w-16 sm:w-24 z-10 bg-gradient-to-l from-gray-50/50 to-transparent" />
+                <div className="pointer-events-none absolute inset-y-0 left-0 w-16 sm:w-24 z-10 bg-linear-to-r from-gray-50/50 to-transparent" />
+                <div className="pointer-events-none absolute inset-y-0 right-0 w-16 sm:w-24 z-10 bg-linear-to-l from-gray-50/50 to-transparent" />
 
                 <div className="brand-marquee-track flex items-center gap-10 sm:gap-16 w-max">
                     {marqueeBrands.map((brand, i) => (
