@@ -7,12 +7,32 @@
   --color-green: #39a75a;
   --font-sans: var(--font-inter), sans-serif;
 }
+
 @layer utilities {
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
   }
+
   .scrollbar-hide {
     scrollbar-width: none;
     -ms-overflow-style: none;
   }
+}
+
+@keyframes brand-marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.brand-marquee-track {
+  animation: brand-marquee 30s linear infinite;
+}
+
+.brand-marquee-track:hover {
+  animation-play-state: paused;
 }
