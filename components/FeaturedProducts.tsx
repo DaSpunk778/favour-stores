@@ -153,69 +153,93 @@ export default function FeaturedProducts() {
                 {products.map((products) => (
                     <div
                         key={products.id}
-                        className="group relative flex flex-col rounded-xl border border-gray-200 bg-white overflow-hidden transition-all duration-150 hover:border-brand-light hover:shadow-md"
+                        className="group relative flex flex-col rounded-xl overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:-translate-y-1"
                     >
+                        {/* Glassmorphism: Multi-layer glass effect for depth and realism */}
+
+                        {/* Layer 1: Base glass with backdrop blur - creates the frosted glass foundation */}
+                        <div className="absolute inset-0 bg-gradient-to-br from-white/60 via-white/40 to-white/20 backdrop-blur-md rounded-xl" />
+
+                        {/* Layer 2: Light reflection overlay - simulates light hitting glass surface */}
+                        <div className="absolute inset-0 bg-gradient-to-br from-white/80 via-transparent to-transparent opacity-50 rounded-xl pointer-events-none" />
+
+                        {/* Layer 3: Glass border - subtle white border for realistic glass edge */}
+                        <div className="absolute inset-0 border border-white/40 rounded-xl pointer-events-none group-hover:border-white/60 transition-all" />
+
+                        {/* Layer 4: Outer glow shadow - creates depth beneath the glass card */}
+                        <div className="absolute inset-0 -z-10 rounded-xl bg-gradient-to-br from-gray-200/40 to-gray-300/20 blur-lg opacity-50 group-hover:opacity-70 transition-opacity" />
+
+                        {/* Badge with glass effect */}
                         {products.badge && (
                             <span
-                                className={`absolute top-2 left-2 z-10 text-[10px] font-semibold px-2 py-0.5 rounded-full ${badgeStyles[products.badge]}`}
+                                className={`absolute top-2 left-2 z-20 text-[10px] font-semibold px-2 py-0.5 rounded-full backdrop-blur-sm border border-white/30 ${badgeStyles[products.badge]}`}
                             >
                                 {products.badge}
                             </span>
                         )}
-                        <Link
-                            href={`/products/${products.slug}`} className="block"
-                        >
-                            <div className="relative w-full aspect-square bg-gray-50">
-                                <Image
-                                    src={products.image}
-                                    alt={products.name}
-                                    fill
-                                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                                    className="object-cover group-hover:scale-105 transition-transform duration-200"//hover for zooming
-                                />
-                            </div>
-                        </Link>
 
-                        <div className="flex flex-col gap-1.5 p-3">
-                            <Link href={`/products/${products.slug}`}>
-                                <h3 className="text-sm font-medium text-gray-800 leading-snug line-clamp-2 hover:text-brand transition-colors">
-                                    {products.name}
-                                </h3>
+                        {/* Content wrapper - positioned above all glass layers */}
+                        <div className="relative z-10 flex flex-col h-full">
+                            <Link
+                                href={`/products/${products.slug}`} className="block"
+                            >
+                                {/* Image container with frosted backdrop */}
+                                <div className="relative w-full aspect-square bg-white/30 backdrop-blur-sm group-hover:bg-white/50 transition-all">
+                                    <Image
+                                        src={products.image}
+                                        alt={products.name}
+                                        fill
+                                        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                                        className="object-cover group-hover:scale-105 transition-transform duration-300"
+                                    />
+                                </div>
                             </Link>
 
-                            <div className="flex items-center gap-1.5">
-                                <RatingStars rating={products.rating} />
-                                <span className="text-xs text-gray-400">
-                                    ({products.reviewCount})
-                                </span>
-                            </div>
+                            {/* Info section with glass backdrop */}
+                            <div className="flex flex-col gap-1.5 p-3 bg-white/20 backdrop-blur-sm">
+                                <Link href={`/products/${products.slug}`}>
+                                    <h3 className="text-sm font-medium text-gray-900 leading-snug line-clamp-2 hover:text-brand transition-colors">
+                                        {products.name}
+                                    </h3>
+                                </Link>
 
-                            <div className="flex items-baseline gap-2">
-                                <span className="text-sm font-bold text-gray-900">
-                                    {formatNaira(products.price)}
-                                </span>
-                                {products.compareAtPrice && (
-                                    <span className="text-xs text-gray-400 line-through">
-                                        {formatNaira(products.compareAtPrice)}
+                                {/* Rating with frosted pill background */}
+                                <div className="flex items-center gap-1.5 bg-white/40 backdrop-blur-sm px-2 py-1 rounded-full w-fit border border-white/30">
+                                    <RatingStars rating={products.rating} />
+                                    <span className="text-xs text-gray-600">
+                                        ({products.reviewCount})
                                     </span>
-                                )}
-                            </div>
+                                </div>
 
-                            <button
-                                type="button"
-                                onClick={() =>
-                                    addItem({
-                                        productId: products.id,
-                                        name: products.name,
-                                        price: products.price,
-                                        image: products.image,
-                                    })
-                                }
-                                className="mt-1 flex items-center justify-center gap-1.5 w-full rounded-lg bg-brand/10 text-brand text-xs font-semibold py-2 hover:bg-brand hover:text-white transition-colors"
-                            >
-                                <FiShoppingCart size={14} />
-                                Add to Cart
-                            </button>
+                                {/* Price section with glass container */}
+                                <div className="flex items-baseline gap-2 bg-white/50 backdrop-blur-sm px-2 py-1.5 rounded-lg border border-white/40">
+                                    <span className="text-sm font-bold text-gray-900">
+                                        {formatNaira(products.price)}
+                                    </span>
+                                    {products.compareAtPrice && (
+                                        <span className="text-xs text-gray-500 line-through">
+                                            {formatNaira(products.compareAtPrice)}
+                                        </span>
+                                    )}
+                                </div>
+
+                                {/* CTA button with enhanced glass effect */}
+                                <button
+                                    type="button"
+                                    onClick={() =>
+                                        addItem({
+                                            productId: products.id,
+                                            name: products.name,
+                                            price: products.price,
+                                            image: products.image,
+                                        })
+                                    }
+                                    className="mt-1 flex items-center justify-center gap-1.5 w-full rounded-lg bg-brand/90 backdrop-blur-sm text-white text-xs font-semibold py-2 hover:bg-brand border border-white/20 shadow-lg shadow-brand/20 group-hover:shadow-xl group-hover:shadow-brand/30 transition-all"
+                                >
+                                    <FiShoppingCart size={14} />
+                                    Add to Cart
+                                </button>
+                            </div>
                         </div>
                     </div>
                 ))}
