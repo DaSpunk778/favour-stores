@@ -18,44 +18,68 @@ export default function Hero() {
     const sectionRef = useRef<HTMLElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
 
+    // Parallax scroll effect: background image zooms in as you scroll down
     const { scrollYProgress } = useScroll({
         target: sectionRef,
         offset: ['start start', 'end start'],
     });
-
     const scale = useTransform(scrollYProgress, [0, 1], [1, 1.25]);
 
+    // GSAP entrance animation: runs once on mount
     useGSAP(() => {
-        const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
+        const tl = gsap.timeline({
+            defaults: {
+                ease: "power3.out" // Smoother, less aggressive easing
+            }
+        });
 
-        tl.fromTo(
-            ".hero-kicker",
-            { y: -60, opacity: 0, rotate: -8 },
-            { y: 0, opacity: 1, rotate: 0, duration: 0.8 }
-        )
+        tl
+            // Kicker badge: slides in from top with a subtle fade
+            .fromTo(
+                ".hero-kicker",
+                { y: -40, opacity: 0 },
+                { y: 0, opacity: 1, duration: 0.6 }
+            )
+            // Headline lines: stagger from below with slight rotation for dynamism
             .fromTo(
                 ".hero-line",
-                { opacity: 0, y: 80, rotate: (i) => (i % 2 === 0 ? -10 : 10), x: (i) => (i % 2 === 0 ? -60 : 60) },
-                { opacity: 1, y: 0, rotate: 0, x: 0, duration: 1, stagger: 0.15 },
-                "-=0.4"
+                { opacity: 0, y: 60, rotate: (i) => (i % 2 === 0 ? -3 : 3) },
+                {
+                    opacity: 1,
+                    y: 0,
+                    rotate: 0,
+                    duration: 0.8,
+                    stagger: 0.12, // Slightly faster stagger for tighter rhythm
+                },
+                "-=0.3" // Overlap with previous animation
             )
+            // Description: simple fade and slide up
             .fromTo(
                 ".hero-desc",
-                { opacity: 0, y: 40 },
-                { opacity: 1, y: 0, duration: 0.8 },
-                "-=0.5"
-            )
-            .fromTo(
-                ".hero-cta",
-                { opacity: 0, scale: 0.7, x: (i) => (i % 2 === 0 ? -40 : 40) },
-                { opacity: 1, scale: 1, x: 0, duration: 0.7, stagger: 0.15, ease: "back.out(1.6)" },
+                { opacity: 0, y: 30 },
+                { opacity: 1, y: 0, duration: 0.7 },
                 "-=0.4"
             )
+            // CTA buttons: bouncy entrance with stagger
+            .fromTo(
+                ".hero-cta",
+                { opacity: 0, scale: 0.85, y: 20 },
+                {
+                    opacity: 1,
+                    scale: 1,
+                    y: 0,
+                    duration: 0.6,
+                    stagger: 0.1,
+                    ease: "back.out(1.4)" // Subtle bounce
+                },
+                "-=0.3"
+            )
+            // Trust badges: slide in from left with stagger
             .fromTo(
                 ".hero-badge",
-                { opacity: 0, y: 30, x: -20 },
-                { opacity: 1, y: 0, x: 0, duration: 0.6, stagger: 0.1 },
-                "-=0.3"
+                { opacity: 0, x: -30 },
+                { opacity: 1, x: 0, duration: 0.5, stagger: 0.08 },
+                "-=0.2"
             );
     }, { scope: containerRef });
 
@@ -64,7 +88,7 @@ export default function Hero() {
             ref={sectionRef}
             className="relative min-h-160 flex items-center overflow-hidden"
         >
-            {/* Background image - fixed pin + scroll zoom */}
+            {/* Background image: fixed position with scroll-based zoom effect */}
             <motion.div
                 className="absolute inset-0 z-0 pointer-events-none"
                 style={{
@@ -74,25 +98,36 @@ export default function Hero() {
                     backgroundPosition: "center",
                 }}
             />
-            {/* Dark overlay */}
+
+            {/* Dark overlay for text legibility */}
             <div className="absolute inset-0 z-10 bg-black/50 pointer-events-none" />
 
-            <div ref={containerRef} className="relative z-20 max-w-7xl mx-auto px-4 py-20 w-full mix-blend-normal">
-                <div className="max-w-xl space-y-6">
+            {/* Hero content container */}
+            <div ref={containerRef} className="relative z-20 max-w-7xl mx-auto px-4 py-20 w-full">
+                <div className="max-w-2xl space-y-6">
 
+                    {/* Kicker badge */}
                     <p className="hero-kicker w-fit px-3 py-1 border border-brand rounded-lg bg-brand/10 text-brand-light font-bold text-sm tracking-wider uppercase">
                         New Tech. Better Life.
                     </p>
+
+                    {/* Main headline: bold, impactful, multi-line */}
                     <h1 className="text-4xl sm:text-5xl xl:text-6xl font-black text-white leading-tight">
                         <span className="hero-line block">Upgrade to</span>
                         <span className="hero-line block">Next Level</span>
-                        <span className="hero-line block whitespace-nowrap text-green"> Electronical Appliances </span>
+                        {/* Prevent "Appliances" from breaking awkwardly on mobile */}
+                        <span className="hero-line block text-green">
+                            Electrical <span className="inline-block">Appliances</span>
+                        </span>
                     </h1>
-                    <p className="hero-desc text-gray-200 text-base leading-relaxed max-w-md">
+
+                    {/* Supporting description */}
+                    <p className="hero-desc text-gray-200 text-base sm:text-lg leading-relaxed max-w-lg font-light">
                         Discover the latest electrical products and devices designed to
                         make everyday life smarter, easier, and more reliable.
                     </p>
 
+                    {/* Call-to-action buttons */}
                     <div className="flex flex-wrap gap-3">
                         <Link
                             href="#"
@@ -108,6 +143,7 @@ export default function Hero() {
                         </Link>
                     </div>
 
+                    {/* Trust badges: social proof elements */}
                     <div className="flex flex-wrap gap-6 pt-2">
                         {trustBadges.map(({ icon: Icon, title, sub }) => (
                             <div key={title} className="hero-badge flex items-center gap-2">

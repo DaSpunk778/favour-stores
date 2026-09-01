@@ -1,9 +1,10 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brand: #276B3A;
-  --color-brand-dark: #1E5229;
-  --color-brand-light: #4CAF6A;
+  /* Nigeria-inspired vibrant green: energetic, fresh, and eye-catching */
+  --color-brand: #00B140;        /* Bright, vibrant green (Nigeria green flag color) */
+  --color-brand-dark: #008F33;   /* Rich darker green for hover states */
+  --color-brand-light: #00D64F;  /* Electric bright green for accents */
   --color-green: #39a75a;
   --font-sans: var(--font-inter), sans-serif;
 }
@@ -34,5 +35,23 @@
 }
 
 .brand-marquee-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes testimonial-marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.testimonial-marquee-track {
+  animation: testimonial-marquee 100s linear infinite;
+}
+
+.testimonial-marquee-track:hover {
   animation-play-state: paused;
 }

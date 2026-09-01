@@ -37,6 +37,7 @@ export default function Header() {
                         />
                     </Link>
 
+                    {/* Desktop navigation links */}
                     <nav className="hidden lg:flex items-center gap-1">
                         {navLinks.map((link) => (
                             <Link
@@ -53,57 +54,79 @@ export default function Header() {
                         ))}
                     </nav>
 
+                    {/* Right side action icons */}
                     <div className="flex items-center gap-1">
-                        {searchOpen ? (
-                            <div className="flex items-center bg-gray-100 rounded-lg">
-                                <FiSearch size={18} />
-                                <input
-                                    autoFocus
-                                    placeholder="Search products…"
-                                    className="bg-transparent  text-sm outline-none w-40 sm:w-56"
-                                    onBlur={() => setSearchOpen(false)}
-                                />
-                            </div>
-                        ) : (
-                            <button
-                                onClick={() => setSearchOpen(true)}
-                                className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
-                            >
-                                <FiSearch size={18} />
-                            </button>
-                        )}
-                        <button className=" p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors">
+                        {/* Search: fixed width container to prevent layout shift */}
+                        <div className="relative">
+                            {searchOpen ? (
+                                <div className="flex items-center gap-2 bg-gray-100 rounded-lg px-3 py-2">
+                                    <FiSearch size={18} className="text-gray-400 shrink-0" />
+                                    <input
+                                        autoFocus
+                                        placeholder="Search products…"
+                                        className="bg-transparent text-sm outline-none w-32 sm:w-48"
+                                        onBlur={() => setSearchOpen(false)}
+                                    />
+                                </div>
+                            ) : (
+                                <button
+                                    onClick={() => setSearchOpen(true)}
+                                    className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+                                    aria-label="Open search"
+                                >
+                                    <FiSearch size={18} />
+                                </button>
+                            )}
+                        </div>
+
+                        {/* User account button */}
+                        <button
+                            className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+                            aria-label="User account"
+                        >
                             <FiUser size={18} />
                         </button>
 
-                        <button className="relative p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors">
+                        {/* Shopping cart with item count badge */}
+                        <button
+                            className="relative p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+                            aria-label="Shopping cart"
+                        >
                             <FiShoppingCart size={18} />
-                            <span className="absolute -top-0.5 -right-0.5 bg-brand text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center" >
-                                {cartCount}
-                            </span>
+                            {cartCount > 0 && (
+                                <span className="absolute -top-0.5 -right-0.5 bg-brand text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                                    {cartCount}
+                                </span>
+                            )}
                         </button>
 
+                        {/* Mobile menu toggle */}
                         <button
                             className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg lg:hidden"
                             onClick={() => setMobileOpen((o) => !o)}
+                            aria-label={mobileOpen ? "Close menu" : "Open menu"}
                         >
-                            {mobileOpen ? <FiX size={22} /> : <FaBarsStaggered  size={22} />}
+                            {mobileOpen ? <FiX size={22} /> : <FaBarsStaggered size={22} />}
                         </button>
                     </div>
                 </div>
             </div>
 
+            {/* Mobile navigation menu: positioned absolutely to avoid pushing content down */}
             {mobileOpen && (
-                <div className="lg:hidden border-t border-gray-100 bg-white px-4 py-4 flex flex-col gap-1">
-                    {navLinks.map((link) => (
-                        <Link
-                            key={link.href}
-                            href={link.href}
-                            className="text-left px-3 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-lg"
-                        >
-                            {link.label}
-                        </Link>
-                    ))}
+                <div className="lg:hidden absolute top-full left-0 right-0 border-t border-gray-100 bg-white shadow-lg">
+                    <div className="px-4 py-4 flex flex-col gap-1">
+                        {navLinks.map((link) => (
+                            <Link
+                                key={link.href}
+                                href={link.href}
+                                className="text-left px-3 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-lg"
+                                onClick={() => setMobileOpen(false)}
+                            >
+                                {link.label}
+                            </Link>
+                        ))}
+                    </div>
                 </div>
             )}
         </header>
