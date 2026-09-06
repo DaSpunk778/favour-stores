@@ -5,6 +5,11 @@ import CategoryStrip from "@/components/CategoryStrip";
 import FeaturedProducts from "@/components/FeaturedProducts"
 import BrandsCarousel from "@/components/BrandsCarousel";
 import Testimonials from "@/components/Testimonials";
+import Newsletter from "@/components/Newsletter";
+import WhyShopWithUs from "@/components/WhyShopWithUs";
+import PromoBanner from "@/components/PromoBanner";
+import Faq from "@/components/Faq";
+import Footer from "@/components/Layout/Footer";
 
 
 export default function HomePage() {
@@ -16,7 +21,12 @@ export default function HomePage() {
       <CategoryStrip />
       <FeaturedProducts />
       <BrandsCarousel />
+      <WhyShopWithUs />
+      <PromoBanner />
       <Testimonials />
+      <Newsletter />
+      <Faq />
+      <Footer />
     </>
   );
 }

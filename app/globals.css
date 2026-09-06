@@ -20,6 +20,30 @@
   }
 }
 
+/* Gentle up/down bob for the newsletter breakout character. It only animates
+   translateY, so it must be applied to a WRAPPER — the centering
+   translateX(-50%) lives on the parent so the two transforms don't clash. */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-float {
+    animation: none;
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
 @keyframes brand-marquee {
   from {
     transform: translateX(0);

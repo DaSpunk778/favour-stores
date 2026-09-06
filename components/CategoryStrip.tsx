@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { GoTag } from "react-icons/go";
+import Reveal from "@/components/anim/Reveal";
 
 type Category = {
     name: string;
@@ -69,7 +70,7 @@ export default function CategoryStrip() {
 
     return (
         <section className="max-w-7xl mx-auto px-4 py-10">
-            <div className="flex items-center justify-between mb-5">
+            <Reveal className="flex items-center justify-between mb-5">
                 <h2 className="flex items-center gap-2 text-2xl sm:text-2xl font-bold text-gray-900">
                     <span>Shop by Category</span>
                     <span className="inline-flex"><GoTag size={20} color="green" /></span>
@@ -80,7 +81,7 @@ export default function CategoryStrip() {
                 >
                     View all
                 </Link>
-            </div>
+            </Reveal>
 
             <div
                 className="relative"

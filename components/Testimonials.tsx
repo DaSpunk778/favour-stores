@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { FaStar } from "react-icons/fa";
 import { PiUsersThree } from "react-icons/pi";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import Reveal from "@/components/anim/Reveal";
 
 type Testimonial = {
     id: string;
@@ -113,8 +114,12 @@ export default function Testimonials() {
             if (atEnd) {
                 el.scrollTo({ left: 0, behavior: "smooth" });
             } else {
-                // Scroll by one card width + gap (384px card + 24px gap = ~408px, but use dynamic calc)
-                const cardWidth = 384 + 24; // w-96 = 384px + gap-6 = 24px
+                // Measure the real card width from the first card + the flex gap,
+                // so we advance exactly one card on every screen size (mobile
+                // cards are w-80/320px, desktop w-96/384px — no hardcoding).
+                const firstCard = el.firstElementChild as HTMLElement | null;
+                const gap = 24; // gap-6
+                const cardWidth = firstCard ? firstCard.offsetWidth + gap : el.clientWidth * 0.9;
                 el.scrollBy({ left: cardWidth, behavior: "smooth" });
             }
         }, 4000);
@@ -124,7 +129,7 @@ export default function Testimonials() {
 
     return (
         <section className="max-w-7xl mx-auto px-4 py-16">
-            <div className="mb-8">
+            <Reveal className="mb-8">
                 <div className="flex items-center gap-2 mb-2">
                     <PiUsersThree size={20} className="text-brand" />
                     <span className="text-sm font-semibold text-brand uppercase tracking-wide">
@@ -134,7 +139,7 @@ export default function Testimonials() {
                 <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">
                     Hear from our Customers
                 </h2>
-            </div>
+            </Reveal>
 
             <div
                 className="relative"
