@@ -80,12 +80,13 @@ export default function Header() {
                         </div>
 
                         {/* User account button */}
-                        <button
+                        <Link
+                            href="/login"
                             className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
                             aria-label="User account"
                         >
                             <FiUser size={18} />
-                        </button>
+                        </Link>
 
                         {/* Shopping cart with item count badge */}
                         <button
