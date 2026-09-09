@@ -6,32 +6,7 @@ import Image from "next/image";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { GoTag } from "react-icons/go";
 import Reveal from "@/components/anim/Reveal";
-
-type Category = {
-    name: string;
-    slug: string;
-    image: string;
-    comingSoon?: boolean;
-};
-
-const categories: Category[] = [
-    { name: "Electric Kettles & Jugs", slug: "kettles-jugs", image: "/categories/kettles-jugs.jpg" },
-    { name: "Airfryers", slug: "airfryers", image: "/categories/airfryers.jpg" },
-    { name: "Fans", slug: "fans", image: "/categories/fans.jpg" },
-    { name: "Blenders", slug: "blenders", image: "/categories/blenders.jpg" },
-    { name: "Combo Deals", slug: "combo-deals", image: "/categories/combo-deals.jpg", comingSoon: true },
-    { name: "Power Solutions", slug: "power-solutions", image: "/categories/power-solutions.jpg" },
-    { name: "Video Games", slug: "video-games", image: "/categories/video-games.jpg" },
-    { name: "Monitors", slug: "monitors", image: "/categories/monitors.jpg" },
-    //{ name: "Small Appliances", slug: "small-appliances", image: "/categories/small-appliances.jpg" },
-    { name: "Cookers", slug: "cookers", image: "/categories/cookers.jpg" },
-    { name: "Freezers", slug: "freezers", image: "/categories/freezers.jpg" },
-    { name: "ACs", slug: "acs", image: "/categories/acs.jpg" },
-    { name: "Audio", slug: "audio", image: "/categories/audio.jpg" },
-    { name: "Washing Machines", slug: "washing-machines", image: "/categories/washing-machines.jpg" },
-    { name: "Refrigerators", slug: "refrigerators", image: "/categories/refrigerators.jpg" },
-    { name: "TVs", slug: "tvs", image: "/categories/tvs.jpg" },
-];
+import { categories } from "@/lib/categories";
 
 export default function CategoryStrip() {
     const scrollRef = useRef<HTMLDivElement>(null);
