@@ -10,7 +10,7 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <main className="relative min-h-screen overflow-hidden bg-gradient-to-br from-[#f0fdf4] via-white to-[#ecfdf3] flex flex-col">
+    <main className="relative min-h-screen overflow-hidden bg-linear-to-br from-[#f0fdf4] via-white to-[#ecfdf3] flex flex-col">
       {/* Ambient brand-green glow blobs */}
       <div
         aria-hidden
