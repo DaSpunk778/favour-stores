@@ -12,12 +12,14 @@ export default function FilterDrawer({
   onClose,
   filters,
   onChange,
+  brandSlugs,
   resultCount,
 }: {
   open: boolean;
   onClose: () => void;
   filters: Filters;
   onChange: (next: Filters) => void;
+  brandSlugs: string[];
   resultCount: number;
 }) {
   // Lock body scroll while the sheet is open.
@@ -65,7 +67,7 @@ export default function FilterDrawer({
         </div>
 
         <div className="overflow-y-auto px-5 py-2">
-          <FilterControls filters={filters} onChange={onChange} />
+          <FilterControls filters={filters} onChange={onChange} brandSlugs={brandSlugs} />
         </div>
 
         <div className="px-5 py-4 border-t border-gray-100">

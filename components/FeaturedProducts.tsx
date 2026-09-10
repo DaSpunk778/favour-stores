@@ -1,17 +1,14 @@
-"use client"
-
 import Link from "next/link";
 import { BsBagCheck } from "react-icons/bs";
 import Reveal from "@/components/anim/Reveal";
 import ProductCard from "@/components/products/ProductCard";
-import { getFeaturedProducts } from "@/lib/products";
+import { getFeaturedProducts } from "@/lib/product-store";
 
-// Homepage "Best Sellers" grid. Data + card markup now live in shared modules
-// (lib/products.ts, components/products/ProductCard) so these match the
-// listing pages exactly.
-const featured = getFeaturedProducts();
-
-export default function FeaturedProducts() {
+// Homepage "Best Sellers" grid. Async server component: reads the catalog from
+// the server-only store (lib/product-store) and passes each product to the
+// client ProductCard, so cards match the listing pages exactly.
+export default async function FeaturedProducts() {
+    const featured = await getFeaturedProducts();
     return (
         <section className="max-w-7xl mx-auto px-4 py-10">
             <div className="flex items-center justify-between mb-5">

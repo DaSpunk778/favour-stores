@@ -6,6 +6,7 @@ import Footer from "@/components/Layout/Footer";
 import Breadcrumb from "@/components/products/Breadcrumb";
 import ProductListing from "@/components/products/ProductListing";
 import { categories, getCategoryBySlug } from "@/lib/categories";
+import { getAllProducts, getBrandSlugs } from "@/lib/product-store";
 
 // Pre-render a static page per known category slug.
 export function generateStaticParams() {
@@ -39,6 +40,13 @@ export default async function CategoryPage({
     notFound();
   }
 
+  // Pass the full catalog + brand list; `initialCategory` pre-selects this
+  // category's filter while still letting shoppers broaden the selection.
+  const [products, brandSlugs] = await Promise.all([
+    getAllProducts(),
+    getBrandSlugs(),
+  ]);
+
   return (
     <>
       <AnnouncementBar />
@@ -54,7 +62,11 @@ export default async function CategoryPage({
         <h1 className="text-xl sm:text-3xl font-bold text-gray-900 mb-6">
           {category.name}
         </h1>
-        <ProductListing initialCategory={category.slug} />
+        <ProductListing
+          initialCategory={category.slug}
+          products={products}
+          brandSlugs={brandSlugs}
+        />
       </main>
       <Footer />
     </>

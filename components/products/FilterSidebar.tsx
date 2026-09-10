@@ -7,9 +7,11 @@ import { emptyFilters, type Filters } from "./types";
 export default function FilterSidebar({
   filters,
   onChange,
+  brandSlugs,
 }: {
   filters: Filters;
   onChange: (next: Filters) => void;
+  brandSlugs: string[];
 }) {
   return (
     <aside className="hidden lg:block w-60 shrink-0">
@@ -25,7 +27,7 @@ export default function FilterSidebar({
           </button>
         </div>
         <div className="rounded-2xl border border-gray-100 bg-white p-4">
-          <FilterControls filters={filters} onChange={onChange} />
+          <FilterControls filters={filters} onChange={onChange} brandSlugs={brandSlugs} />
         </div>
       </div>
     </aside>

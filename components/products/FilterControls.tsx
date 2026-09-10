@@ -2,15 +2,17 @@
 
 import { FaStar } from "react-icons/fa";
 import { categories } from "@/lib/categories";
-import { brandSlugs } from "@/lib/products";
 import type { Filters } from "./types";
 
 // The actual filter inputs. Shared verbatim between the desktop FilterSidebar
 // and the mobile FilterDrawer so there's only one place to change filters.
+// `brandSlugs` is passed down from the server (via ProductListing) so the brand
+// list always reflects the live catalog.
 
 type FilterControlsProps = {
   filters: Filters;
   onChange: (next: Filters) => void;
+  brandSlugs: string[];
 };
 
 function toggle(list: string[], value: string): string[] {
@@ -38,7 +40,7 @@ function Section({
   );
 }
 
-export default function FilterControls({ filters, onChange }: FilterControlsProps) {
+export default function FilterControls({ filters, onChange, brandSlugs }: FilterControlsProps) {
   // Only offer categories that aren't "coming soon".
   const availableCategories = categories.filter((c) => !c.comingSoon);
 
