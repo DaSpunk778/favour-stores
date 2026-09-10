@@ -94,7 +94,7 @@ export default function Faq() {
     return (
         <section className="max-w-3xl mx-auto px-4 py-16">
             <Reveal className="mb-8 text-center">
-                <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">
+                <h2 className="text-xl sm:text-3xl font-bold text-gray-900">
                     Frequently Asked Questions
                 </h2>
                 <p className="mt-2 text-sm text-gray-500">

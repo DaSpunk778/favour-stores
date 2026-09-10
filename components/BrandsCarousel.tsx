@@ -33,7 +33,7 @@ export default function BrandsCarousel() {
     return (
         <section className="py-10 border-y border-gray-100 bg-gray-50/50 overflow-hidden">
             <div className="max-w-7xl mx-auto px-4 mb-6">
-                <h2 className="text-xl sm:text-2xl font-bold text-gray-900 text-center">
+                <h2 className="text-lg sm:text-2xl font-bold text-gray-900 text-center">
                     <span>Trusted Brands </span>
                     <span className="inline-flex"><PiHandshake size={20} color="green" /></span>
                 </h2>

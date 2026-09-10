@@ -9,6 +9,9 @@ export type Product = {
   name: string;
   slug: string;
   image: string;
+  images?: string[]; // extra gallery images beyond `image` (shown as thumbnails
+  // on the detail page). The admin dashboard will populate this; `image` stays
+  // the single card/listing thumbnail.
   price: number;
   compareAtPrice?: number;
   rating: number;
@@ -19,6 +22,9 @@ export type Product = {
   featured?: boolean; // shown in the homepage "Best Sellers" grid
   createdAt: string; // ISO date — used for "Newest" sort
   badge?: "Best Seller" | "New" | "Sale";
+  description?: string; // long-form copy shown on the detail page; the admin
+  // dashboard will populate this per product. Optional for now — use
+  // getProductDescription() to render a sensible fallback when it's empty.
 };
 
 export const products: Product[] = [
@@ -27,6 +33,8 @@ export const products: Product[] = [
     name: "1.8L Stainless Steel Electric Kettle",
     slug: "1-8l-stainless-steel-electric-kettle",
     image: "/categories/kettles-jugs.jpg",
+    // demo gallery — remove once real product photos are uploaded via the dashboard
+    images: ["/categories/blenders.jpg", "/categories/cookers.jpg"],
     price: 15500,
     compareAtPrice: 19000,
     rating: 4.5,
@@ -37,6 +45,8 @@ export const products: Product[] = [
     featured: true,
     createdAt: "2025-06-01",
     badge: "Best Seller",
+    description:
+      "Boil water fast with this 1.8L stainless steel kettle. The concealed heating element and 360° swivel base make everyday use effortless, while auto shut-off and boil-dry protection keep things safe. Cordless serving, a comfortable handle, and a water-level window round out a kitchen essential built to last.",
   },
   {
     id: "2",
@@ -52,6 +62,8 @@ export const products: Product[] = [
     featured: true,
     createdAt: "2025-07-15",
     badge: "Best Seller",
+    description:
+      "Fry, roast, and bake with up to 85% less oil. This 5.5L digital air fryer has a spacious basket for family portions, 8 one-touch presets, and precise temperature control up to 200°C. The non-stick basket is dishwasher-safe, and the digital timer shuts the unit off automatically when your food is ready.",
   },
   {
     id: "3",
@@ -440,6 +452,58 @@ export function getFeaturedProducts(): Product[] {
 
 export function getProductsByCategory(categorySlug: string): Product[] {
   return products.filter((p) => p.category === categorySlug);
+}
+
+export function getProductBySlug(slug: string): Product | undefined {
+  return products.find((p) => p.slug === slug);
+}
+
+// Related products: same category first, excluding the current product. Falls
+// back to same-brand items if the category is thin, capped at `limit`.
+export function getRelatedProducts(product: Product, limit = 4): Product[] {
+  const sameCategory = products.filter(
+    (p) => p.id !== product.id && p.category === product.category
+  );
+  if (sameCategory.length >= limit) return sameCategory.slice(0, limit);
+
+  const sameBrand = products.filter(
+    (p) =>
+      p.id !== product.id &&
+      p.brand === product.brand &&
+      p.category !== product.category
+  );
+  return [...sameCategory, ...sameBrand].slice(0, limit);
+}
+
+// Display names for brand slugs. Keep in sync with BrandsCarousel; falls back to
+// a capitalized slug for anything not listed here.
+const brandNames: Record<string, string> = {
+  hisense: "Hisense",
+  lg: "LG",
+  skyrun: "Skyrun",
+  aeon: "Aeon",
+  royal: "Royal",
+  century: "Century",
+  mewe: "Mewe",
+  tcl: "TCL",
+  snowsea: "Snowsea",
+  sony: "Sony",
+  senwei: "Senwei",
+  philips: "Philips",
+  panasonic: "Panasonic",
+};
+
+export function getBrandName(slug: string): string {
+  return brandNames[slug] ?? slug.charAt(0).toUpperCase() + slug.slice(1);
+}
+
+// Detail-page description. Until the admin dashboard fills in per-product copy,
+// synthesize a readable placeholder from the fields we already have so the
+// section never renders empty.
+export function getProductDescription(product: Product): string {
+  if (product.description?.trim()) return product.description;
+  const brand = getBrandName(product.brand);
+  return `The ${product.name} from ${brand} blends dependable performance with everyday value. Backed by genuine warranty and fast nationwide delivery, it's a solid pick for your home. Full product details are coming soon.`;
 }
 
 // Distinct brand slugs present in the catalog — used to build the brand filter

@@ -112,7 +112,7 @@ export default function Hero() {
                     </p>
 
                     {/* Main headline: bold, impactful, multi-line */}
-                    <h1 className="text-4xl sm:text-5xl xl:text-6xl font-black text-white leading-tight">
+                    <h1 className="text-3xl sm:text-5xl xl:text-6xl font-black text-white leading-tight">
                         <span className="hero-line block">Upgrade to</span>
                         <span className="hero-line block">Next Level</span>
                         {/* Prevent "Appliances" from breaking awkwardly on mobile */}

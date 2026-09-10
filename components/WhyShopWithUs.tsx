@@ -35,7 +35,7 @@ export default function WhyShopWithUs() {
     return (
         <section className="max-w-7xl mx-auto px-4 py-14">
             <div className="mb-8 text-center">
-                <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">
+                <h2 className="text-xl sm:text-3xl font-bold text-gray-900">
                     Why Shop With Us
                 </h2>
                 <p className="mt-2 text-sm text-gray-500">

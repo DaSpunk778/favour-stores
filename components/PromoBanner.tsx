@@ -130,7 +130,7 @@ export default function PromoBanner() {
                                 <p className="inline-block border border-green-300 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-brand">
                                    {current.kicker.trim()}
                                 </p>
-                                <h2 className="mt-2 text-2xl sm:text-4xl font-bold text-gray-900 leading-tight">
+                                <h2 className="mt-2 text-xl sm:text-4xl font-bold text-gray-900 leading-tight">
                                     {current.title}
                                 </h2>
                                 <p className="mt-4 text-sm sm:text-base text-gray-600 leading-relaxed max-w-md">

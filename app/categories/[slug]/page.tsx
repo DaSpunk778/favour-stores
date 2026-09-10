@@ -51,7 +51,7 @@ export default async function CategoryPage({
             { label: category.name },
           ]}
         />
-        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6">
+        <h1 className="text-xl sm:text-3xl font-bold text-gray-900 mb-6">
           {category.name}
         </h1>
         <ProductListing initialCategory={category.slug} />
