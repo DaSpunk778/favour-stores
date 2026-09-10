@@ -108,7 +108,7 @@ export default function Newsletter() {
                     {/* LEFT: heading + copy. Centered on mobile (character sits
                         above center there), left-aligned on desktop. */}
                     <div className="text-center lg:text-left">
-                        <h2 className="text-2xl sm:text-3xl font-bold text-white">
+                        <h2 className="text-xl sm:text-3xl font-bold text-white">
                             Get 10% Off Your First Order
                         </h2>
                         <p className="mt-3 text-sm sm:text-base text-gray-400 leading-relaxed max-w-md mx-auto lg:mx-0">
