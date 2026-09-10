@@ -10,18 +10,19 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <main className="relative min-h-screen overflow-hidden bg-linear-to-br from-[#f0fdf4] via-white to-[#ecfdf3] flex flex-col">
-      {/* Ambient brand-green glow blobs */}
+    <main className="relative min-h-screen bg-linear-to-br from-[#f0fdf4] via-white to-[#ecfdf3] flex flex-col">
+      {/* Ambient brand-green glow blobs. Clipped by their own wrapper (not by
+          <main>) so the sticky header below keeps working — position: sticky
+          breaks if an ancestor on its chain has overflow-hidden. */}
       <div
         aria-hidden
-        className="pointer-events-none absolute -top-24 -left-24 h-72 w-72 rounded-full bg-brand/20 blur-3xl"
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -bottom-24 -right-24 h-80 w-80 rounded-full bg-brand-light/20 blur-3xl"
-      />
+        className="pointer-events-none absolute inset-0 overflow-hidden"
+      >
+        <div className="absolute -top-24 -left-24 h-72 w-72 rounded-full bg-brand/20 blur-3xl" />
+        <div className="absolute -bottom-24 -right-24 h-80 w-80 rounded-full bg-brand-light/20 blur-3xl" />
+      </div>
 
-      <header className="relative z-10 px-4 sm:px-6 py-5">
+      <header className="sticky top-0 z-20 px-4 sm:px-6 py-5 bg-white/50 backdrop-blur-md">
         <Link href="/" className="inline-flex">
           <Image
             src="/favour-logo.png"
