@@ -11,17 +11,21 @@ import ProductGrid from "@/components/products/ProductGrid";
 import AddToCartPanel from "@/components/products/AddToCartPanel";
 import ProductGallery from "@/components/products/ProductGallery";
 import {
-  products,
-  getProductBySlug,
-  getRelatedProducts,
   getBrandName,
   getProductDescription,
   formatNaira,
 } from "@/lib/products";
+import {
+  getAllProducts,
+  getProductBySlug,
+  getRelatedProducts,
+} from "@/lib/product-store";
 import { getCategoryBySlug } from "@/lib/categories";
 
-// Pre-render a static page per product slug.
-export function generateStaticParams() {
+// Pre-render a static page per product slug. New admin-added slugs render
+// on-demand (default dynamicParams) and are cached after first visit.
+export async function generateStaticParams() {
+  const products = await getAllProducts();
   return products.map((p) => ({ slug: p.slug }));
 }
 
@@ -31,7 +35,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const product = getProductBySlug(slug);
+  const product = await getProductBySlug(slug);
   if (!product) return { title: "Product | Favour Stores" };
   return {
     title: `${product.name} | Favour Stores`,
@@ -61,14 +65,14 @@ export default async function ProductPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const product = getProductBySlug(slug);
+  const product = await getProductBySlug(slug);
 
   if (!product) {
     notFound();
   }
 
   const category = getCategoryBySlug(product.category);
-  const related = getRelatedProducts(product);
+  const related = await getRelatedProducts(product);
   // Detail-page gallery = the card thumbnail plus any extra images, de-duped.
   const gallery = Array.from(
     new Set([product.image, ...(product.images ?? [])])

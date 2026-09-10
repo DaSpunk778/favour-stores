@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { FiFilter } from "react-icons/fi";
-import { products as allProducts } from "@/lib/products";
+import type { Product } from "@/lib/products";
 import FilterSidebar from "./FilterSidebar";
 import FilterDrawer from "./FilterDrawer";
 import SortDropdown from "./SortDropdown";
@@ -15,12 +15,16 @@ import { emptyFilters, type Filters, type SortKey } from "./types";
 const PAGE_SIZE = 12;
 
 // Client-side orchestrator: holds filter/sort/page state locally, derives the
-// visible slice with useMemo. Data comes from the shared static catalog for
-// now; swap `allProducts` for a fetch/props once the DB exists.
+// visible slice with useMemo. The catalog + brand list arrive as props from the
+// async server layer (lib/product-store) so this stays purely presentational.
 export default function ProductListing({
   initialCategory,
+  products,
+  brandSlugs,
 }: {
   initialCategory?: string;
+  products: Product[];
+  brandSlugs: string[];
 }) {
   const [filters, setFilters] = useState<Filters>(() =>
     initialCategory
@@ -33,7 +37,7 @@ export default function ProductListing({
 
   // Filtered + sorted list (before pagination).
   const filtered = useMemo(() => {
-    const result = allProducts.filter((p) => {
+    const result = products.filter((p) => {
       if (filters.categories.length && !filters.categories.includes(p.category))
         return false;
       if (filters.brands.length && !filters.brands.includes(p.brand)) return false;
@@ -69,7 +73,7 @@ export default function ProductListing({
         break;
     }
     return sorted;
-  }, [filters, sort]);
+  }, [filters, sort, products]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   // Guard against a stale page after filters shrink the result set.
@@ -95,7 +99,7 @@ export default function ProductListing({
 
   return (
     <div className="flex gap-8">
-      <FilterSidebar filters={filters} onChange={updateFilters} />
+      <FilterSidebar filters={filters} onChange={updateFilters} brandSlugs={brandSlugs} />
 
       <div className="flex-1 min-w-0">
         {/* Toolbar: result count + mobile filter button + sort */}
@@ -149,6 +153,7 @@ export default function ProductListing({
         onClose={() => setDrawerOpen(false)}
         filters={filters}
         onChange={updateFilters}
+        brandSlugs={brandSlugs}
         resultCount={filtered.length}
       />
     </div>
