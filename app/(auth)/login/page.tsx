@@ -2,7 +2,7 @@
 
 import { useActionState } from "react";
 import Link from "next/link";
-import { FiMail, FiLock, FiCheckCircle, FiShoppingCart } from "react-icons/fi";
+import { FiMail, FiLock, FiCheckCircle } from "react-icons/fi";
 import { loginAction, type AuthState } from "@/app/actions/auth";
 import AuthField from "@/components/auth/AuthField";
 import SubmitButton from "@/components/auth/SubmitButton";

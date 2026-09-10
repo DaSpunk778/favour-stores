@@ -1,4 +1,7 @@
 "use server";
+//this matters because its where psswd ckecs and hashing, DB queries happens so the server makes the mechanism automatic.
+
+
 
 // Auth server actions. Validation-only for now — there's no DB or session
 // layer wired up yet, so these validate input server-side and return a typed
@@ -9,12 +12,13 @@ export type AuthState = {
   ok: boolean;
   message?: string;
   // Field-level errors keyed by input name.
-  errors?: Record<string, string>;
+  //Record<string, string> : where every key and value are string 
+  errors?: Record<string, string>; 
   // Echo back non-secret values so the form can repopulate after a failed submit.
   values?: Record<string, string>;
 };
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; //the email regex
 
 function getString(formData: FormData, key: string) {
   const value = formData.get(key);

@@ -2,10 +2,11 @@
 
 import { useActionState } from "react";
 import Link from "next/link";
-import { FiUser, FiMail, FiLock, FiCheckCircle, FiShoppingCart } from "react-icons/fi";
+import { FiUser, FiMail, FiLock, FiCheckCircle} from "react-icons/fi";
 import { signupAction, type AuthState } from "@/app/actions/auth";
 import AuthField from "@/components/auth/AuthField";
 import SubmitButton from "@/components/auth/SubmitButton";
+import { TiShoppingCart } from "react-icons/ti";
 
 const initialState: AuthState = { ok: false };
 
@@ -16,8 +17,8 @@ export default function SignupPage() {
     <div className="w-full max-w-md">
       <div className="rounded-3xl border border-white/60 bg-white/70 backdrop-blur-xl shadow-xl shadow-black/5 ring-1 ring-inset ring-white/50 p-7 sm:p-8">
         <div className="mb-6 flex flex-col items-center text-center">
-          <span className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-brand/10 text-brand ring-1 ring-inset ring-brand/20">
-            <FiShoppingCart size={26} />
+          <span className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-4xl bg-brand/10 text-brand ring-1 ring-inset ring-brand/20">
+            <TiShoppingCart size={36} />
           </span>
           <h1 className="text-2xl font-bold text-gray-900">Create your account</h1>
           <p className="mt-1 text-sm text-gray-500">

@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import Link from "next/link";
-import { FiArrowRight, FiHeadphones, FiLock, FiShield } from "react-icons/fi";
+import { FiArrowRight, FiHeadphones, FiLock } from "react-icons/fi";
 import { IoShieldCheckmarkSharp } from "react-icons/io5";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { gsap } from "gsap";
@@ -112,7 +112,7 @@ export default function Hero() {
                     </p>
 
                     {/* Main headline: bold, impactful, multi-line */}
-                    <h1 className="text-3xl sm:text-5xl xl:text-6xl font-black text-white leading-tight">
+                    <h1 className="text-3xl sm:text-5xl xl:text-6xl font-bold  text-white leading-tight">
                         <span className="hero-line block">Upgrade to</span>
                         <span className="hero-line block">Next Level</span>
                         {/* Prevent "Appliances" from breaking awkwardly on mobile */}
@@ -131,13 +131,13 @@ export default function Hero() {
                     <div className="flex flex-wrap gap-3">
                         <Link
                             href="#"
-                            className="hero-cta flex items-center gap-2 bg-brand hover:bg-brand-dark text-white font-semibold px-8 py-3 rounded-xl transition-all duration-150 hover:shadow-lg hover:shadow-brand/30"
+                            className="hero-cta flex items-center gap-2 bg-brand hover:bg-brand-dark text-white font-semibold px-8 py-3 rounded-l transition-all duration-150 hover:shadow-lg hover:shadow-brand/30"
                         >
                             Shop Now <FiArrowRight />
                         </Link>
                         <Link
                             href="/categories"
-                            className="hero-cta flex items-center gap-2 border-2 border-white/40 hover:border-brand-light text-white hover:text-green font-semibold px-6 py-3 rounded-xl transition-all duration-150"
+                            className="hero-cta flex items-center gap-2 border-2 border-white/40 hover:border-brand-light text-white hover:text-green font-semibold px-6 py-3 rounded-l transition-all duration-150"
                         >
                             Explore Categories
                         </Link>
