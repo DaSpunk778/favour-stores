@@ -31,7 +31,7 @@ const marqueeBrands = [...brands, ...brands];
 
 export default function BrandsCarousel() {
     return (
-        <section className="py-10 border-y border-gray-100 bg-gray-50/50 overflow-hidden">
+        <section className="py-10 bor border-gray-100  overflow-hidden">
             <div className="max-w-7xl mx-auto px-4 mb-6">
                 <h2 className="text-lg sm:text-2xl font-bold text-gray-900 text-center">
                     <span>Trusted Brands </span>

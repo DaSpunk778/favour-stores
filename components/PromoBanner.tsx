@@ -6,25 +6,7 @@ import Image from "next/image";
 import { FiArrowRight, FiArrowLeft } from "react-icons/fi";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 
-/**
- * Promo / CTA carousel.
- *
- * Layout (matching the reference): a full-bleed background image that's faded
- * back so it's low-attention, with a floating card on top split into two halves
- * — a white text panel on the left and a crisp product image on the right.
- * Prev/next arrows step through the slides.
- *
- * The background image reuses the SAME parallax zoom as the Hero (it slowly
- * scales as the section scrolls through the viewport) so the section feels
- * alive instead of static.
- *
- * To manage promos, just edit the `slides` array below — everything (the card,
- * the background, the arrows, the dots) is driven off it.
- */
 
-// A single fixed backdrop for the whole section — an electronics scene that
-// stays put while only the card's contents rotate. Swap this one path to
-// change the mood of the entire promo section.
 const BACKGROUND_IMAGE = "/home/promo-bg.jpg";
 
 type Slide = {
@@ -77,13 +59,14 @@ export default function PromoBanner() {
     // Very subtle parallax. The backdrop is a small (740px) image, so a big
     // zoom would upscale it and look soft — keep the range tight so it stays
     // near natural size and reads sharp under the light wash.
-    const scale = useTransform(scrollYProgress, [0, 1], [1, 1.04]);
+    const scale = useTransform(scrollYProgress, [0, 1], [1, 1.17]);
 
     // Step through slides. The modulo math wraps around both ends so you can
     // go forward past the last slide (back to first) and back past the first.
     const go = (dir: 1 | -1) =>
         setActive((i) => (i + dir + slides.length) % slides.length);
 
+    
     return (
         <section
             ref={sectionRef}
@@ -91,11 +74,7 @@ export default function PromoBanner() {
             aria-label="Promotions"
             className="relative overflow-hidden py-16 sm:py-20"
         >
-            {/*
-              BACKGROUND: one fixed electronics scene for the whole section. It
-              does NOT change with the slides — only the card contents rotate.
-              The parallax `scale` still applies the Hero-style zoom on scroll.
-            */}
+        
             <motion.div
                 aria-hidden
                 style={{
@@ -104,13 +83,13 @@ export default function PromoBanner() {
                     backgroundSize: "cover",
                     backgroundPosition: "center",
                 }}
-                className="absolute inset-0 z-0 pointer-events-none"
+                className=" absolute inset-0 z-0 pointer-events-none"
             />
 
             {/* A gentle wash keeps the card readable while letting the backdrop
                 stay sharp (no blur) — like the reference. Nudge the opacity here
                 if you want the background more or less prominent. */}
-            <div aria-hidden className="absolute inset-0 z-0 bg-white/25" />
+            <div aria-hidden className="absolute inset-0 z-0 " />
 
             {/* THE FLOATING CARD */}
             <div className="relative z-10 max-w-6xl mx-auto px-4">
@@ -138,7 +117,7 @@ export default function PromoBanner() {
                                 </p>
                                 <Link
                                     href={current.href}
-                                    className="mt-7 inline-flex items-center gap-2 bg-brand hover:bg-brand-dark text-white font-semibold text-sm px-7 py-3 rounded-lg transition-colors"
+                                    className="mt-7 inline-flex items-center gap-2 bg-brand hover:bg-brand-dark text-white font-semibold text-sm px-7 py-3  transition-colors"
                                 >
                                     {current.cta} <FiArrowRight />
                                 </Link>
@@ -173,15 +152,9 @@ export default function PromoBanner() {
                         </div>
                     </div>
 
-                    {/* RIGHT (BELOW on mobile): the promo image. On mobile the card
-                        is a single column, so this panel stacks under the text — it
-                        gets a shorter height (h-56) there and grows to h-[22rem] on
-                        desktop. `order-first md:order-none` is NOT used: we keep the
-                        image AFTER the text on mobile so the headline/CTA read first,
-                        then the product shows below. object-contain + a fixed height
-                        means every slide's product shows in full, never cropped and
-                        never overflowing on either axis. */}
-                    <div className="relative flex items-center justify-center h-56 sm:h-72 md:h-[22rem] bg-gray-50 p-6 md:p-8">
+                
+        
+                    <div className="relative flex items-center justify-center h-56 sm:h-72 md:h-88 bg-gray-50 p-6 md:p-8">
                         <AnimatePresence mode="wait">
                             <motion.div
                                 key={current.image}
