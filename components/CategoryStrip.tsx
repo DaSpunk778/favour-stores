@@ -48,7 +48,7 @@ export default function CategoryStrip() {
             <Reveal className="flex items-center justify-between mb-5">
                 <h2 className="flex items-center gap-2 text-xl sm:text-2xl font-bold text-gray-900">
                     <span>Shop by Category</span>
-                    <span className="inline-flex"><GoTag size={20} color="green" /></span>
+                    <span className="inline-flex text-brand"><GoTag size={20}  /></span>
                 </h2>
                 <Link
                     href="/products"

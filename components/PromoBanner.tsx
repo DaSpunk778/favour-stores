@@ -7,7 +7,7 @@ import { FiArrowRight, FiArrowLeft } from "react-icons/fi";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 
 
-const BACKGROUND_IMAGE = "/home/promo-bg.jpg";
+const BACKGROUND_IMAGE = "/uploads/promo-background.jpg"; // 740px wide, 1.5MB, no blur
 
 type Slide = {
     kicker: string; // small label above the title, e.g. "DEAL OF THE WEEK"
@@ -154,7 +154,7 @@ export default function PromoBanner() {
 
                 
         
-                    <div className="relative flex items-center justify-center h-56 sm:h-72 md:h-88 bg-gray-50 p-6 md:p-8">
+                    <div className="relative flex items-center justify-center h-56 sm:h-72 md:h-88 bg-gray-200 p-6 md:p-8">
                         <AnimatePresence mode="wait">
                             <motion.div
                                 key={current.image}

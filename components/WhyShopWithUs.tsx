@@ -5,6 +5,7 @@ import { RiSecurePaymentLine } from "react-icons/ri";
 import { MdOutlineVerified } from "react-icons/md";
 import { BiSupport } from "react-icons/bi";
 import Reveal from "@/components/anim/Reveal";
+import { TiShoppingCart } from "react-icons/ti";
 
 // Each benefit is data, not markup — keeps the JSX below a simple loop and
 // makes it trivial to add/remove/reorder a benefit later.
@@ -36,7 +37,8 @@ export default function WhyShopWithUs() {
         <section className="max-w-7xl mx-auto px-4 py-14">
             <div className="mb-8 text-center">
                 <h2 className="text-xl sm:text-3xl font-bold text-gray-900">
-                    Why Shop With Us
+                    <span>Why Shop With Us</span>
+                    <span className="inline-flex px-2 text-brand"><TiShoppingCart size={20}  /></span>
                 </h2>
                 <p className="mt-2 text-sm text-gray-500">
                     The little things that make every order worry-free.

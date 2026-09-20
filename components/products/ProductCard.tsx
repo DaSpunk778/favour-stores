@@ -29,7 +29,7 @@ export default function ProductCard({ product }: { product: Product }) {
   const addItem = useCartStore((state) => state.addItem);
 
   return (
-    <div className="group relative flex h-full flex-col rounded-2xl overflow-hidden border border-white/50 bg-white/25 backdrop-blur-xl shadow-lg shadow-black/5 ring-1 ring-inset ring-white/40 transition-all duration-300 hover:-translate-y-1 hover:bg-white/35 hover:shadow-xl hover:shadow-black/10">
+    <div className="group relative flex h-full flex-col rounded-2xl overflow-hidden border border-white/50 bg-white/40 backdrop-blur-xl shadow-lg shadow-black/5 ring-1 ring-inset ring-white/40 transition-all duration-300 hover:-translate-y-1 hover:bg-white/35 hover:shadow-xl hover:shadow-black/10">
       {/* Badge */}
       {product.badge && (
         <span className="absolute top-2 left-2 z-20">

@@ -14,7 +14,7 @@ export default async function FeaturedProducts() {
             <div className="flex items-center justify-between mb-5">
                 <h2 className="text-xl sm:text-3xl font-bold text-gray-900">
                     <span>Best Sellers </span>
-                    <span className="inline-flex"><BsBagCheck size={20} color="green" /></span>
+                    <span className="inline-flex text-brand"><BsBagCheck size={20}  /></span>
                 </h2>
                 <Link
                     href="/products"

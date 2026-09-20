@@ -55,9 +55,7 @@ export default function Newsletter() {
     }
 
     return (
-        // Outer section just provides vertical rhythm + horizontal padding. The
-        // actual band is the contained card below, so nothing stretches edge to
-        // edge — it sits within the same max-w-7xl rail as the rest of the page.
+        
         <section className="max-w-7xl mx-auto px-4 py-16">
             {/*
               Reveal = the scroll-in wrapper. It is overflow-VISIBLE and has extra

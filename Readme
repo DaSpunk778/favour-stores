@@ -1,0 +1,70 @@
+Admin Dashboard + Swappable Data Layer
+Context
+The store's catalog currently lives as a sync static array of 28 products in lib/products.ts, imported directly by both server pages and client components. The client wants to (1) manage products themselves through a friendly admin dashboard — they don't write code — and (2) do it now, before the real database exists, in a way that lets us "call it from the database easily" once the DB is live.
+
+The way to satisfy both: introduce an async data layer whose function signatures are the contract the UI depends on. Today those functions read/write a server-side JSON file; when the DB goes live we rewrite one file's internals (JSON → Sequelize) and neither the dashboard nor the storefront changes. The Sequelize connection scaffold already exists at lib/db.ts, confirming this is the intended endgame.
+
+A JSON file store (not localStorage) is required because the server-rendered storefront must read the same data the admin writes, and because it must be swappable for a server DB later — a browser store can do neither.
+
+Version facts (verified against node_modules/next/dist/docs/)
+This is a modified Next.js 16.2.11; these were confirmed in-repo, not assumed:
+
+Cache Components is OFF (no cacheComponents in next.config.ts) → the "Previous Model" applies (02-guides/caching-without-cache-components.md). Async server components that read non-fetch data (our fs reads) are statically prerendered at build; after a mutation we call revalidatePath to regenerate on next visit. No <Suspense> and no force-dynamic required. In dev, pages always render on-demand, so edits show instantly.
+revalidatePath(path, type?: 'page' | 'layout') (04-functions/revalidatePath.md): revalidatePath('/', 'layout') purges the client cache and invalidates all cached data on next visit — the simple, correct refresh after a product edit that can touch home/listing/detail/category simultaneously.
+Server Actions (01-getting-started/07-mutating-data.md): file-level "use server", <form action={fn}> receives FormData, useActionState(action, init) → [state, action, pending], redirect from next/navigation after revalidating. This is exactly the existing app/actions/auth.ts pattern.
+server-only import and React cache() are the docs' recommended guards/dedupe for a non-fetch data module.
+Proxy (proxy.ts, 01-getting-started/16-proxy.md) is explicitly not an auth solution — optimistic checks only. So real /admin auth is deferred to the session phase; any gate now is a placeholder.
+Architecture: the swappable seam
+lib/products.ts        → PURE, client-safe: type + formatters only (no data, no fs)
+lib/product-store.ts   → SERVER-ONLY, async: reads/writes data/products.json   ← the ONLY file that changes for the DB
+data/products.json     → the 28 products (moved verbatim out of lib/products.ts)
+app/admin/actions.ts   → "use server": parse FormData → validate → call store → revalidatePath
+Storefront pages/components call the async store (or receive its data as props). When the DB lands, lib/product-store.ts swaps fs for Sequelize using lib/db.ts; every signature stays identical.
+
+1. Split the data layer
+lib/products.ts → keep only the pure, client-safe pieces (no fs, importable anywhere): the Product type, formatNaira, getBrandName, brandNames, getProductDescription. Remove the products array, the async-bound helpers, and brandSlugs from this file.
+
+New lib/product-store.ts — server-only, async data + mutations. Top of file: import "server-only" (add the tiny server-only dep if missing; the fs import already prevents client bundling as a fallback). Reads via fs.readFile(path.join(process.cwd(), "data", "products.json"), "utf8") — not a JSON import, so runtime writes are visible. Wrap the base read in React cache() to dedupe within a render.
+
+Reads (async, mirror today's signatures): getAllProducts(), getFeaturedProducts(), getProductsByCategory(slug), getProductBySlug(slug), getRelatedProducts(product, limit=4), getBrandSlugs() (distinct sorted brands — replaces the old brandSlugs const).
+Mutations: createProduct(input), updateProduct(id, patch), deleteProduct(id) → mutate array, fs.writeFile(..., JSON.stringify(list, null, 2)).
+Helpers: readStore() (parse; on ENOENT seed-write from a bundled seed then return), writeStore(list). New id via max-existing-numeric-id + 1; slug auto-derived from name with a uniqueness check.
+New data/products.json — the current 28-object array moved out of lib/products.ts verbatim (commit it as the seed).
+
+2. Make the storefront read the async layer
+Server pages become async and pass data as props; client components stop importing catalog data and receive it as props. Reclassify every @/lib/products import (grep them): pure (Product, formatNaira, getBrandName, getProductDescription) stays; data moves to @/lib/product-store.
+
+app/products/page.tsx (make async): await Promise.all([getAllProducts(), getBrandSlugs()]) → <ProductListing products={...} brandSlugs={...} />.
+app/categories/[slug]/page.tsx: same, plus initialCategory={category.slug} (unchanged). generateStaticParams stays from categories.
+app/products/[slug]/page.tsx: getProductBySlug/getRelatedProducts/generateStaticParams/generateMetadata now await the store. New admin-added slugs render on-demand via default dynamicParams.
+components/products/ProductListing.tsx: add props products: Product[], brandSlugs: string[]; replace the allProducts import with the products prop; thread brandSlugs into <FilterSidebar> and <FilterDrawer>.
+components/products/FilterSidebar.tsx / FilterDrawer.tsx: accept and forward brandSlugs to FilterControls.
+components/products/FilterControls.tsx: take brandSlugs as a prop instead of importing it (keeps importing categories from lib/categories.ts).
+components/FeaturedProducts.tsx: convert to an async server component that awaits getFeaturedProducts() and maps to <Reveal>/<ProductCard> (both stay client). If it turns out to use client-only hooks, instead keep it client and have app/page.tsx await getFeaturedProducts() and pass the array as a prop — read the file first to decide.
+3. Admin dashboard (app/admin)
+Professional, non-technical-friendly. Reuses components/auth/SubmitButton.tsx (useFormStatus), the AuthState-shaped validation return from app/actions/auth.ts, components/ui/button.tsx (has destructive/outline variants), and cn from lib/utils.ts.
+
+app/admin/layout.tsx — branded shell: sidebar/topbar nav (Dashboard · Products · Add product) + logo. Server component.
+app/admin/page.tsx — overview: stat cards (total / in-stock / out-of-stock / featured / #categories) from the store. Async server.
+app/admin/products/page.tsx — table: thumbnail, name, category, brand, price, stock & featured badges, Edit / Delete. Async server. "＋ Add product" → /admin/products/new.
+app/admin/products/new/page.tsx — renders <ProductForm> (empty) bound to createProductAction.
+app/admin/products/[id]/edit/page.tsx — loads the product via getProductBySlug/by id, renders <ProductForm> prefilled, bound to updateProductAction.
+app/admin/actions.ts — "use server": createProductAction / updateProductAction / deleteProductAction. Each parses FormData, validates (returns { ok, message?, errors?, values? } like auth), calls the store mutation, then revalidatePath('/', 'layout') (refreshes storefront and admin), and redirect('/admin/products') on success.
+components/admin/ProductForm.tsx — "use client", useActionState(action, initialState). Grouped sections for a non-technical user, each with helper text: Basics (name, auto/editable slug, category <select> from categories, brand), Pricing (price, optional compareAtPrice), Media (see image note), Availability (inStock toggle, featured toggle, badge select none/Best Seller/New/Sale), Details (description textarea, rating, reviewCount, createdAt date defaulting to today). Inline state.errors + a top success/error banner. Extend AuthField type union to include "number"/"url", or add a sibling AdminField — reuse, don't duplicate.
+components/admin/DeleteProductButton.tsx — "use client", a <form action={deleteProductAction}> with a hidden id and a confirm step; destructive button variant.
+Images (bridge approach): real file upload needs storage we don't have yet, so the Media section offers a URL/path text field with live preview plus quick-pick from existing /public/categories/*.jpg, and a repeatable list for gallery images[]. Real uploads land with the storage/DB phase. (Called out so it can be redirected at approval.)
+
+4. Optional: /admin gate (placeholder)
+Per the proxy doc, real auth belongs with sessions/DB. Optionally add a minimal proxy.ts (export function proxy, export const config = { matcher: ['/admin/:path*'] }) as a placeholder redirect hook — but genuine protection is deferred. Recommend deferring unless you want the stub now.
+
+Caveats
+Serverless persistence: fs writes don't persist on ephemeral/read-only serverless FS (e.g., Vercel). This store is for local dev / the client's local use / a persistent Node host; durable production writes arrive with the DB swap — which is the whole point of the async seam. Expected for this pre-DB phase.
+Editing data/products.json via fs (not an import) won't trigger an HMR loop since it isn't in the module graph.
+Verification
+npm run dev; confirm storefront still renders: /, /products (filters + brand list), /products/[slug] (gallery/related), /categories/[slug].
+/admin → dashboard stats match the seed (28).
+Create: add a product → redirected to the list, new row present; it appears on /products and its /products/[slug] renders.
+Edit: change price/stock/featured → reflected on the list, listing, and detail.
+Delete: confirm → row gone, absent from storefront; its detail 404s appropriately.
+Toggle featured → homepage "Best Sellers" updates. Change category/brand → filters on /products reflect it (brand list comes from getBrandSlugs()).
+npm run build succeeds (pure/server-only split keeps fs out of client bundles); npm run lint clean.
