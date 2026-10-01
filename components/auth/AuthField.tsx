@@ -56,7 +56,9 @@ export default function AuthField({
           defaultValue={defaultValue}
           aria-invalid={error ? true : undefined}
           aria-describedby={error ? errorId : undefined}
-          className={`w-full rounded-xl border bg-white/70 backdrop-blur px-4 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 outline-none transition-all ${
+          // text-base (16px) on mobile stops iOS Safari from auto-zooming when
+          // the field is focused; text-sm restores the compact look on sm+.
+          className={`w-full rounded-xl border bg-white/70 backdrop-blur px-4 py-2.5 text-base sm:text-sm text-gray-900 placeholder:text-gray-400 outline-none transition-all ${
             icon ? "pl-10" : ""
           } ${isPassword ? "pr-10" : ""} ${
             error
