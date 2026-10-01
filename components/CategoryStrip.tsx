@@ -11,6 +11,7 @@ import { categories } from "@/lib/categories";
 export default function CategoryStrip() {
     const scrollRef = useRef<HTMLDivElement>(null);
     const [isPaused, setIsPaused] = useState(false);
+    
 
     const scrollByAmount = (direction: "left" | "right") => {
         const el = scrollRef.current;
@@ -44,7 +45,7 @@ export default function CategoryStrip() {
     }, [isPaused]);
 
     return (
-        <section className="max-w-7xl mx-auto px-4 py-10">
+        <section id="categories"  className="max-w-7xl mx-auto px-4 py-10">
             <Reveal className="flex items-center justify-between mb-5">
                 <h2 className="flex items-center gap-2 text-xl sm:text-2xl font-bold text-gray-900">
                     <span>Shop by Category</span>

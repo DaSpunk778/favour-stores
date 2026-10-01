@@ -69,6 +69,7 @@ export default function PromoBanner() {
     
     return (
         <section
+            id="new-arrivals"
             ref={sectionRef}
             aria-roledescription="carousel"
             aria-label="Promotions"

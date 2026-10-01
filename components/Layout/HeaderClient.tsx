@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { FiChevronDown, FiLogOut, FiSearch, FiShoppingCart, FiUser, FiX } from "react-icons/fi";
@@ -9,15 +9,17 @@ import { useCartStore } from "@/lib/cart-store";
 import { useHydrated } from "@/lib/use-hydrated";
 import { logoutAction } from "@/app/actions/auth";
 import type { CurrentUser } from "@/lib/dal";
+import { usePathname } from "next/navigation";
+import { useLenis } from "lenis/react";
 
 const navLinks = [
     { label: "Home", href: "/" },
-    { label: "Shop", href: "/shop", hasDropdown: true },
-    { label: "Categories", href: "/categories", hasDropdown: true },
-    { label: "Deals", href: "/deals" },
-    { label: "New Arrivals", href: "/new-arrivals" },
-    { label: "Brands", href: "/brands" },
-    { label: "Support", href: "/support" },
+    { label: "Shop", href: "#", hasDropdown: true },
+    { label: "Categories", href: "/#categories"},
+    { label: "Faqs", href: "/#faqs" },
+    { label: "New Arrivals", href: "/#new-arrivals" },
+    { label: "Brands", href: "/#brands" },
+    { label: "About", href: "/about" },
 ];
 
 function initials(name: string) {
@@ -29,11 +31,14 @@ function initials(name: string) {
         .join("");
 }
 
+
 export default function HeaderClient({ user }: { user: CurrentUser | null }) {
     const [mobileOpen, setMobileOpen] = useState(false);
     const [searchOpen, setSearchOpen] = useState(false);
     const [accountOpen, setAccountOpen] = useState(false);
     const accountRef = useRef<HTMLDivElement>(null);
+    const pathname = usePathname();
+    const lenis = useLenis();   
     const rawCartCount = useCartStore((state) => state.totalItems());
     const hydrated = useHydrated();
     // Until the client has hydrated the persisted cart, render 0 on both server
@@ -59,6 +64,41 @@ export default function HeaderClient({ user }: { user: CurrentUser | null }) {
         };
     }, [accountOpen]);
 
+    const handleScrollTo = (e: React.MouseEvent, href: string) => {
+        setMobileOpen(false); // close the mobile menu for ANY link (scroll or route)
+
+        const hashIndex = href.indexOf("#");
+        if (hashIndex === -1) return; // plain route link (Home, About) — let <Link> navigate
+
+        const id = href.slice(hashIndex + 1);
+        if (!id) {
+            //bare "#" (the shop toogle) - never let it jump to the top 
+            e.preventDefault();
+            return;
+        }
+
+        if (pathname === "/") {
+            //Already on the landing page: take over and glide with Lenis.
+            e.preventDefault();
+            const target = document.getElementById(id);
+            if (target) lenis?.scrollTo(target, { offset: -80});
+        }
+        // Otherwise (on another page) we do NOT preventDefault — the
+        // <Link href="/#id"> routes home, and the effect in step D scrolls on arrival.
+    }
+
+    // When we land on the landing page carrying a hash (e.g. arriving from
+// /products via a "/#brands" link), glide to that section once it's mounted.
+    useEffect(() => {
+        if (pathname !== "/") return;
+        const id = window.location.hash.slice(1);
+        if (!id) return;
+        const target = document.getElementById(id);
+        if (!target) return;
+        const raf = requestAnimationFrame(() => lenis?.scrollTo(target, { offset: -80 }));
+        return () => cancelAnimationFrame(raf);
+    }, [pathname, lenis])
+
     return (
         <header className="bg-white border-b border-gray-100 sticky top-0 z-50 shadow-sm">
             <div className="max-w-7xl mx-auto px-4">
@@ -80,6 +120,7 @@ export default function HeaderClient({ user }: { user: CurrentUser | null }) {
                             <Link
                                 key={link.href}
                                 href={link.href}
+                                onClick={(e) => handleScrollTo(e, link.href)}
                                 className={`flex items-center gap-0.5 px-3 py-2 text-sm font-medium rounded-lg transition-colors ${link.label === "Home"
                                     ? "text-brand"
                                     : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
@@ -227,7 +268,7 @@ export default function HeaderClient({ user }: { user: CurrentUser | null }) {
                                 key={link.href}
                                 href={link.href}
                                 className="text-left px-3 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-lg"
-                                onClick={() => setMobileOpen(false)}
+                                onClick={(e) => handleScrollTo(e, link.href)}
                             >
                                 {link.label}
                             </Link>

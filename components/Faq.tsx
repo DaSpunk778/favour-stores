@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useRef, useState } from "react";
 import { FiPlus, FiMinus } from "react-icons/fi";
 import Reveal from "@/components/anim/Reveal";
 
@@ -82,6 +82,7 @@ export default function Faq() {
     const [openIndex, setOpenIndex] = useState<number | null>(null);
     // Whether the extra questions (beyond INITIAL_COUNT) are showing.
     const [expanded, setExpanded] = useState(false);
+    const sectionRef = useRef<HTMLElement>(null);
 
     // Show the first 5, or all of them once "See more" is clicked.
     const visibleFaqs = expanded ? faqs : faqs.slice(0, INITIAL_COUNT);
@@ -92,7 +93,10 @@ export default function Faq() {
         setOpenIndex((current) => (current === index ? null : index));
 
     return (
-        <section className="max-w-3xl mx-auto px-4 py-16">
+        <section 
+        id="faqs"
+        ref={sectionRef} 
+        className="max-w-3xl mx-auto px-4 py-16">
             <Reveal className="mb-8 text-center">
                 <h2 className="text-xl sm:text-3xl font-bold text-gray-900">
                     Frequently Asked Questions
