@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import AnnouncementBar from "@/components/Layout/AnnouncementBar";
 import Header from "@/components/Layout/Header";
+import SearchBar from "@/components/search/SearchBar";
 import Footer from "@/components/Layout/Footer";
 import Breadcrumb from "@/components/products/Breadcrumb";
 import ProductListing from "@/components/products/ProductListing";
@@ -20,7 +21,10 @@ export default async function ProductsPage() {
   return (
     <>
       <AnnouncementBar />
-      <Header />
+      <div className="sticky top-0 z-50">
+        <Header />
+      </div>
+      <SearchBar />
       <main className="max-w-7xl mx-auto px-4 py-8">
         <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Products" }]} />
         <h1 className="text-xl sm:text-3xl font-bold text-gray-900 mb-6">

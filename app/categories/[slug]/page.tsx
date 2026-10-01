@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import AnnouncementBar from "@/components/Layout/AnnouncementBar";
 import Header from "@/components/Layout/Header";
+import SearchBar from "@/components/search/SearchBar";
 import Footer from "@/components/Layout/Footer";
 import Breadcrumb from "@/components/products/Breadcrumb";
 import ProductListing from "@/components/products/ProductListing";
@@ -51,6 +52,7 @@ export default async function CategoryPage({
     <>
       <AnnouncementBar />
       <Header />
+      <SearchBar />
       <main className="max-w-7xl mx-auto px-4 py-8">
         <Breadcrumb
           items={[

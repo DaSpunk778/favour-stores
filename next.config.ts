@@ -8,6 +8,8 @@ const nextConfig: NextConfig = {
     ],
   },
 
+  serverExternalPackages: ["pg", "pg-hstore", "sequelize"],
+
   experimental: {
     serverActions: {
       // Product photos routinely exceed the 1MB default. This covers a large

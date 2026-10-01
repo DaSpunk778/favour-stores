@@ -1,4 +1,5 @@
 import { Sequelize } from "sequelize";
+import pg from "pg";
 
 declare global {
   // eslint-disable-next-line no-var
@@ -8,6 +9,7 @@ declare global {
 let sequelize: Sequelize;
 
 const options = {
+  dialectModule: pg,
   dialectOptions: {
     ssl: {
       require: true,

@@ -1,5 +1,6 @@
 import AnnouncementBar from "@/components/Layout/AnnouncementBar";
 import Header from "@/components/Layout/Header";
+import SearchBar from "@/components/search/SearchBar";
 import Hero from "@/components/home/Hero";
 import CategoryStrip from "@/components/CategoryStrip";
 import FeaturedProducts from "@/components/FeaturedProducts"
@@ -17,6 +18,7 @@ export default function HomePage() {
     <>
       <AnnouncementBar />
       <Header />
+      <SearchBar />
       <Hero />
       <CategoryStrip />
       <FeaturedProducts />

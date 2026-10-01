@@ -5,6 +5,7 @@ import Image from "next/image";
 import { FiShoppingCart } from "react-icons/fi";
 import { FaStar } from "react-icons/fa";
 import { useCartStore } from "@/lib/cart-store";
+import { useAuth } from "@/components/providers/AuthProvider";
 import { formatNaira, type Product } from "@/lib/products";
 import ProductBadge from "./ProductBadge";
 
@@ -27,6 +28,21 @@ function RatingStars({ rating }: { rating: number }) {
 // visually identical everywhere.
 export default function ProductCard({ product }: { product: Product }) {
   const addItem = useCartStore((state) => state.addItem);
+  const { isAuthed } = useAuth();
+
+  function handleAdd() {
+    // Guests must log in before they can add anything to the cart.
+    if (!isAuthed) {
+      alert("Please log in to add items to your cart.");
+      return;
+    }
+    addItem({
+      productId: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.image,
+    });
+  }
 
   return (
     <div className="group relative flex h-full flex-col rounded-2xl overflow-hidden border border-white/50 bg-white/40 backdrop-blur-xl shadow-lg shadow-black/5 ring-1 ring-inset ring-white/40 transition-all duration-300 hover:-translate-y-1 hover:bg-white/35 hover:shadow-xl hover:shadow-black/10">
@@ -84,14 +100,7 @@ export default function ProductCard({ product }: { product: Product }) {
         <button
           type="button"
           disabled={!product.inStock}
-          onClick={() =>
-            addItem({
-              productId: product.id,
-              name: product.name,
-              price: product.price,
-              image: product.image,
-            })
-          }
+          onClick={handleAdd}
           className="mt-auto flex items-center justify-center gap-1.5 w-full rounded-lg bg-brand/90 text-white text-xs font-semibold py-2 hover:bg-brand transition-colors disabled:opacity-50 disabled:pointer-events-none"
         >
           <FiShoppingCart size={14} />

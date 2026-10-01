@@ -5,6 +5,7 @@ import { FaStar } from "react-icons/fa";
 import { FiTruck, FiShield, FiRefreshCw } from "react-icons/fi";
 import AnnouncementBar from "@/components/Layout/AnnouncementBar";
 import Header from "@/components/Layout/Header";
+import SearchBar from "@/components/search/SearchBar";
 import Footer from "@/components/Layout/Footer";
 import Breadcrumb from "@/components/products/Breadcrumb";
 import ProductGrid from "@/components/products/ProductGrid";
@@ -87,6 +88,7 @@ export default async function ProductPage({
     <>
       <AnnouncementBar />
       <Header />
+      <SearchBar />
       <main className="max-w-7xl mx-auto px-4 py-8">
         <Breadcrumb
           items={[

@@ -122,33 +122,6 @@ export default function ProductGallery({
             <FiX size={22} />
           </button>
 
-          {hasMany && (
-            <>
-              <button
-                type="button"
-                aria-label="Previous image"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  go(-1);
-                }}
-                className="absolute left-3 sm:left-6 grid h-11 w-11 place-items-center rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors"
-              >
-                <FiChevronLeft size={24} />
-              </button>
-              <button
-                type="button"
-                aria-label="Next image"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  go(1);
-                }}
-                className="absolute right-3 sm:right-6 grid h-11 w-11 place-items-center rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors"
-              >
-                <FiChevronRight size={24} />
-              </button>
-            </>
-          )}
-
           <div
             onClick={(e) => e.stopPropagation()}
             className="relative aspect-square w-full max-w-2xl overflow-hidden rounded-2xl"
@@ -160,6 +133,34 @@ export default function ProductGallery({
               sizes="(max-width: 768px) 100vw, 672px"
               className="object-contain"
             />
+
+            {/* Arrows overlaid ON the image, vertically centred — not below it. */}
+            {hasMany && (
+              <>
+                <button
+                  type="button"
+                  aria-label="Previous image"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    go(-1);
+                  }}
+                  className="absolute left-3 top-1/2 z-10 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full bg-white/20 text-white hover:bg-white/30 transition-colors"
+                >
+                  <FiChevronLeft size={24} />
+                </button>
+                <button
+                  type="button"
+                  aria-label="Next image"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    go(1);
+                  }}
+                  className="absolute right-3 top-1/2 z-10 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full bg-white/20 text-white hover:bg-white/30 transition-colors"
+                >
+                  <FiChevronRight size={24} />
+                </button>
+              </>
+            )}
           </div>
 
           {hasMany && (

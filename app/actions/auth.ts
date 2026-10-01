@@ -1,12 +1,14 @@
 "use server";
 //this matters because its where psswd ckecs and hashing, DB queries happens so the server makes the mechanism automatic.
+import { redirect } from "next/navigation";
+import { UniqueConstraintError } from "sequelize";
+import { User } from "@/lib/models";
+import { createSession, destroySession } from "@/lib/auth-session";
 
 
 
-// Auth server actions. Validation-only for now — there's no DB or session
-// layer wired up yet, so these validate input server-side and return a typed
+
 // state for `useActionState`. Swap the "// TODO: persist" blocks for real
-// Sequelize + session logic once the User model exists.
 
 export type AuthState = {
   ok: boolean;
@@ -29,7 +31,7 @@ export async function loginAction(
   _prevState: AuthState,
   formData: FormData
 ): Promise<AuthState> {
-  const email = getString(formData, "email");
+  const email = getString(formData, "email").toLowerCase();
   const password = String(formData.get("password") ?? "");
 
   const errors: Record<string, string> = {};
@@ -50,11 +52,26 @@ export async function loginAction(
 
   // TODO: persist — look up the user, verify the hashed password, create a
   // session cookie, then redirect("/"). For now we just acknowledge success.
-  return {
-    ok: true,
-    message: "Signed in successfully. (Backend not wired up yet.)",
-    values: { email },
-  };
+  // return {
+  //   ok: true,
+  //   message: "Signed in successfully. (Backend not wired up yet.)",
+  //   values: { email },
+  // };
+
+  let userId: number;
+  try {
+    const user = await User.findOne({ where: { email }});
+    if (!user || !(await user.validatePassword(password))) {
+      return { ok: false, message: "Invalid email or password.", values: { email} };
+    }
+    userId = user.id;
+  } catch (err) {
+    console.error("Login failes:", err);
+    return { ok: false, message: "something went wromg. Try again.", values: { email} };
+  }
+
+  await createSession(userId);
+  redirect("/");
 }
 
 export async function signupAction(
@@ -103,9 +120,40 @@ export async function signupAction(
 
   // TODO: persist — check the email isn't taken, hash the password, create the
   // user row + session cookie, then redirect("/"). Stubbed for now.
-  return {
-    ok: true,
-    message: "Account created successfully. (Backend not wired up yet.)",
-    values: { name, email },
-  };
+  // return {
+  //   ok: true,
+  //   message: "Account created successfully. (Backend not wired up yet.)",
+  //   values: { name, email },
+  // };
+
+  let userId: number;
+  try {
+    const existing = await User.findOne({ where: { email }});
+    if (existing) {
+      return {
+        ok: false,
+        errors: { email: "An account with this email already exists." },
+        values: { name, email },
+      };
+    }
+    const user = await User.create({ name, email, password });
+    userId = user.id;
+  } catch (err) {
+    if (err instanceof UniqueConstraintError) {
+      return {
+        ok: false,
+        errors: { email: "An account with this email already exists." },
+        values: { name, email },
+      };
+    };
+    console.error("signup failed:", err);
+    return { ok: false, message: "Something went wrong. Try again.", values: { name, email } };
+  }
+  await createSession(userId);
+  redirect("/");
+}
+
+export async function logoutAction() {
+  await destroySession();
+  redirect("/login")
 }

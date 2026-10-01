@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { FiShoppingCart, FiMinus, FiPlus, FiCheck } from "react-icons/fi";
 import { useCartStore } from "@/lib/cart-store";
+import { useAuth } from "@/components/providers/AuthProvider";
 import type { Product } from "@/lib/products";
 
 // Interactive purchase controls for the detail page: quantity stepper + add to
@@ -10,10 +11,16 @@ import type { Product } from "@/lib/products";
 // a server component.
 export default function AddToCartPanel({ product }: { product: Product }) {
   const addItem = useCartStore((state) => state.addItem);
+  const { isAuthed } = useAuth();
   const [qty, setQty] = useState(1);
   const [added, setAdded] = useState(false);
 
   function handleAdd() {
+    // Guests must log in before they can add anything to the cart.
+    if (!isAuthed) {
+      alert("Please log in to add items to your cart.");
+      return;
+    }
     addItem(
       {
         productId: product.id,
